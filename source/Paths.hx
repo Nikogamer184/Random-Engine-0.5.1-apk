@@ -134,7 +134,7 @@ class Paths
 			return file;
 		}
 		#end
-		return SUtil.getPath() + 'assets/videos/$key';
+		return 'assets/videos/$key';
 	}
 
 	static public function sound(key:String, ?library:String):Dynamic

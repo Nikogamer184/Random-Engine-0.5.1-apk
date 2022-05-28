@@ -1,62 +1,67 @@
-#if web
-import openfl.net.NetConnection;
-import openfl.net.NetStream;
-import openfl.events.NetStatusEvent;
-import openfl.media.Video;
-#elseif !web
-import vlc.VideoHandler;
-#end
-import flixel.FlxBasic;
+import flixel.text.FlxText;
+// import flixel.FlxState;
 import flixel.FlxG;
+// import flixel.FlxSubState;
+import flixel.FlxBasic;
 
-class FlxVideo extends FlxBasic {
-	#if VIDEOS_ALLOWED
-	public var finishCallback:Void->Void = null;
-	
-	#if !web
-	public static var video:VideoHandler;
-	#end
+import extension.webview.WebView;
 
-	public function new(name:String) {
+using StringTools;
+
+class FlxVideo extends FlxBasic
+{
+	public static var androidPath:String = 'file:///android_asset/';
+
+	public static var source1:String = 'assets/videos/';
+
+	// public var nextState:FlxState;
+
+    public var finishCallback:Void->Void = null;
+
+	public function new(source:String)
+	{
 		super();
 
-		#if web
-		var player:Video = new Video();
-		player.x = 0;
-		player.y = 0;
-		FlxG.addChildBelowMouse(player);
-		var netConnect = new NetConnection();
-		netConnect.connect(null);
-		var netStream = new NetStream(netConnect);
-		netStream.client = {
-			onMetaData: function() {
-				player.attachNetStream(netStream);
-				player.width = FlxG.width;
-				player.height = FlxG.height;
-			}
-		};
-		netConnect.addEventListener(NetStatusEvent.NET_STATUS, function(event:NetStatusEvent) {
-			if(event.info.code == "NetStream.Play.Complete") {
-				netStream.dispose();
-				if(FlxG.game.contains(player)) FlxG.game.removeChild(player);
+		// text = new FlxText(0, 0, 0, "Video Exited! Tap to Continue", 48);
+		// text.screenCenter();
+		// text.alpha = 0;
+		// add(text);
 
-				if(finishCallback != null) finishCallback();
-			}
-		});
-		netStream.play(name);
+		// will fix later -Daninnocent
 
-		#elseif !web
-		// by Polybius, check out hxCodec! https://github.com/polybiusproxy/hxCodec
+		// nextState = toTrans;
 
-		video = new VideoHandler();
-		video.finishCallback = function()
-		{
-				if (finishCallback != null){
-			        finishCallback();
-		        }
-		}
-		video.playVideo(name);
-		#end
+		//FlxG.autoPause = false;
+
+		WebView.onClose=onClose;
+		WebView.onURLChanging=onURLChanging;
+
+		WebView.open(androidPath + source + '.html', false, null, ['http://exitme(.*)']);
 	}
-	#end
+
+	public override function update(dt:Float) {
+		for (touch in FlxG.touches.list)
+			if (touch.justReleased)
+				if(finishCallback != null) finishCallback();
+
+                // if(FlxG.android.justReleased.BACK)
+                // {
+                //    if(finishCallback != null) finishCallback();
+                // }
+
+		super.update(dt);	
+	}
+
+	public function onClose(){// not working
+	 	trace('video closed lmao');
+		if (finishCallback != null)
+		{
+			finishCallback();
+		}
+	 }
+
+	function onURLChanging(url:String) {
+		if (url == 'http://exitme/') if(finishCallback != null) finishCallback(); // drity hack lol
+		trace("WebView is about to open: "+url);
+	}
 }
