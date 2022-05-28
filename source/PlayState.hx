@@ -795,7 +795,6 @@ class PlayState extends MusicBeatState
 			luaArray.push(new FunkinLua(luaFile));
 		#elseif LUA_ALLOWED
 		// STAGE SCRIPTS
-		#if LUA_ALLOWED
 		var doPush:Bool = false;
 
 		if(openfl.utils.Assets.exists("assets/stages/" + curStage + ".lua"))
