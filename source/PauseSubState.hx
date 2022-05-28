@@ -30,6 +30,8 @@ class PauseSubState extends MusicBeatSubstate
 	var difficultyChoices = [];
 	var curSelected:Int = 0;
 	var practiceText:FlxText;
+	var pauseMusic:FlxSound;
+
 
 	// var botplayText:FlxText;
 	public static var transCamera:FlxCamera;

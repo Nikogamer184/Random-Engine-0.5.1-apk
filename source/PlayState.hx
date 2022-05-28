@@ -53,6 +53,7 @@ import DialogueBoxPsych;
 import lime.app.Application;
 
 import sys.FileSystem;
+import sys.io.File;
 
 import Shaders;
 import openfl.filters.ShaderFilter;
