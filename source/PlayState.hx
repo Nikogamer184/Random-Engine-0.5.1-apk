@@ -429,6 +429,7 @@ class PlayState extends MusicBeatState
 		switch (curStage)
 		{
 			case 'stage': // Week 1
+				addShaderToCamera('hud', new VCRDistortionEffect(0,true,true,true));
 				var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
 				add(bg);
 
@@ -1352,10 +1353,6 @@ class PlayState extends MusicBeatState
 
 		Conductor.safeZoneOffset = (ClientPrefs.safeFrames / 60) * 1000;
 		callOnLuas('onCreatePost', []);
-
-		if (songName == 'tutorial') {
-		addShaderToCamera('hud', new VCRDistortionEffect(0,true,true,true));
-		}
 
 		super.create();
 	}
