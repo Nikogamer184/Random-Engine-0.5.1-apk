@@ -1354,7 +1354,7 @@ class PlayState extends MusicBeatState
 		callOnLuas('onCreatePost', []);
 
 		if (SONG.song == 'Tutorial') {
-		addShaderToCamera('hud', 'VCRDistortionEffect')
+		addShaderToCamera('hud', 'VCRDistortionEffect');
 		}
 
 		super.create();
