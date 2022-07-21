@@ -1353,6 +1353,10 @@ class PlayState extends MusicBeatState
 		Conductor.safeZoneOffset = (ClientPrefs.safeFrames / 60) * 1000;
 		callOnLuas('onCreatePost', []);
 
+		if (SONG.song == 'Tutorial') {
+		addShaderToCamera('hud', 'VCRDistortionEffect')
+		}
+
 		super.create();
 	}
 
